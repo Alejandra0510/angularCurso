@@ -1,0 +1,20 @@
+
+<h1> Dragonball Page</h1>
+<hr />
+
+<section class="row">
+  <div class="col-12 col-sm-6">
+    <dragonball-character-add
+      (newCharacter)="dragonballService.addCharacter($event)" //$event valor del evento a emitir
+      //() emite eventos
+    />
+  </div>
+
+  <div class="col-12 col-sm-6">
+
+    <dragonball-character-list
+      listName = "Listado de personajes"  //enviando información padre a hijo en un input signal
+      [characters]="dragonballService.characters()" //[] =  asignar atributos
+    />
+  </div>
+</section>
