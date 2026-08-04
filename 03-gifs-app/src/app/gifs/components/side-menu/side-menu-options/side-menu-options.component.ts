@@ -26,6 +26,7 @@ export class SideMenuOptionsComponent {
       icon: 'fa-solid fa-magnifying-glass',
       label: 'Buscador',
       sublabel: 'Buscar Gifs',
-      route: '/dashboard/search'    }
+      route: '/dashboard/search'
+    }
   ]
 }
