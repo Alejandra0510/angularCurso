@@ -12,6 +12,6 @@ export class gifMapper {
   }
 
   static mapGiphyItemsToGifArray(items: GiphyItem[]): Gif[]{
-    return items.map( this.mapGiphyToGif);
+    return items.map( this.mapGiphyToGif );
   }
 }
