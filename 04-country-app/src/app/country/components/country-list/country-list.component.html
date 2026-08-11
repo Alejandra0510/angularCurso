@@ -4,7 +4,7 @@
     <thead>
       <tr>
         <th>#</th>
-        <th>ïcono</th>
+        <th>Ícono</th>
         <th>Bandera</th>
         <th>Nombre</th>
         <th>Capital</th>
@@ -13,9 +13,27 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-
-      </tr>
+      @for (country of countries(); track country.cioc; let index = $index) {
+        <tr>
+          <td>{{ index + 1}}</td>
+          <td>{{ country.emoji }}</td>
+          <td>
+            <img [src]="country.urlSvg" [alt]="country.names"
+              class="w-10">
+          </td>
+          <td>{{ country.names }}</td>
+          <td>{{ country.capitals }}</td>
+          <td>
+            <span class="badge badge-secondary">
+              {{ country.population | number }}
+            </span>
+          </td>
+          <td>
+            <a [routerLink]="['/country/by', country.cioc]"
+              class="link-primary cursor-pointer">Más información</a>
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
 </section>

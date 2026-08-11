@@ -1,4 +1,11 @@
 <section>
-  <country-search-input  placeholder="Buscar por región de mi país" />
-  <country-list />
+  <country-search-input
+    placeholder="Buscar por ciudad de mi país"
+    (value)="query.set($event)" />
+
+  @if(captialResource.error()){
+    <h3>{{ captialResource.error() }}</h3>
+  } @if( captialResource.hasValue()){
+    <country-list [countries]= "captialResource.value()!" />
+  }
 </section>
