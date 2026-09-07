@@ -1,0 +1,47 @@
+<section class="mx-10">
+  <h1 class="text-3xl"> {{ country().names }}</h1>
+</section>
+
+<section class="stats shadow m-5">
+  <div class="stat place-items-center">
+    <div class="stat-title">Población</div>
+    <div class="stat-value text-primary">{{ country().population | number}}</div>
+    <div class="stat-desc">Desde {{ currentYear() }} </div>
+  </div>
+
+  <div class="stat place-items-center">
+    <div class="stat-title">Nombre</div>
+    <div class="stat-value text-secondary">{{ country().names }}</div>
+    <div class="stat-desc">{{ country().region}}</div>
+  </div>
+
+  <div class="stat place-items-center">
+    <div class="stat-title">Sub Región</div>
+    <div class="stat-value">{{ country().subregion }}</div>
+    <div class="stat-desc text-secondary">{{ country().region }}</div>
+  </div>
+
+  <div class="stat place-items-center">
+    <div class="stat-title">Bandera</div>
+    <div class="stat-value">
+      <img [alt]="country().names"
+           [src]="country().urlSvg"
+           class="responsive" />
+    </div>
+    <div class="stat-desc text-secondary">{{ country().region }}</div>
+  </div>
+</section>
+
+<section class="diff aspect-16/9" tabindex="0">
+  <div class="diff-item-1" role="img" tabindex="0">
+    <img [alt]="country().names"
+         class="responsive"
+         [src]="country().urlSvg" />
+  </div>
+  <div class="diff-item-2" role="img">
+    <img class="blur brightness-75 responsive"
+         [alt]="country().names"
+         [src]="country().urlSvg" />
+  </div>
+  <div class="diff-resizer"></div>
+</section>

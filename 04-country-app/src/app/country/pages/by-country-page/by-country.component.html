@@ -3,9 +3,11 @@
     placeholder="Buscar por ciudad de mi país"
     (value)="query.set($event)" />
 
-  @if(captialResource.error()){
-    <h3>{{ captialResource.error() }}</h3>
-  } @if( captialResource.hasValue()){
-    <country-list [countries]= "captialResource.value()!" />
-  }
+
+  <country-list
+    [countries]= "capitalResource.value() ?? []"
+    [errorMessage]="capitalResource.error()"
+    [isEmpty]="capitalResource.value()?.length == 0"
+    [isLoading]="capitalResource.isLoading()"  />
+
 </section>

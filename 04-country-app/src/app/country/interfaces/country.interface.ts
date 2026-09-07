@@ -4,5 +4,8 @@ export interface CountryItems {
   urlSvg:     string,
   names:      string,
   capitals:   string,
-  population: number
+  population: number,
+  region:     string,
+  subregion:  string,
+  flag:       string
 }

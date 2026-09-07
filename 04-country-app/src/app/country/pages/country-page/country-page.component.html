@@ -1,1 +1,14 @@
-<p>country-page works!</p>,
+<!--  -->
+@if (countryResourceByCode.error()) {
+  <not-found-component />
+}
+
+<!--  -->
+@if (countryResourceByCode.isLoading()) {
+  <h3 class="text-3xl">Cargando...</h3>
+}
+
+<!--  -->
+@if (countryResourceByCode.hasValue()) {
+   <country-information-component [country]="countryResourceByCode.value()!" />
+}
