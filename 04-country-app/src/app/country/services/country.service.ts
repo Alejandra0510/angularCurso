@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, resource } from '@angular/core';
 import { RESTCountry } from '../interfaces/rest-contries.interfaces';
 import { catchError, delay, map, Observable, of, tap, throwError } from 'rxjs';
 import { CountryItems } from '../interfaces/country.interface';
@@ -14,8 +14,10 @@ const key_api = 'rc_live_09e5ace6a36a44e18d4b03532de44d85';
 
 export class CountryService {
   private http = inject(HttpClient);
-  private queryCache = new Map<string, CountryItems[]>();
+
+  private queryCache        = new Map<string, CountryItems[]>();
   private queryCacheCountry = new Map<string, CountryItems[]>();
+  private queryCacheRegion  = new Map<string, CountryItems[]>();
 
   searchByCapital( query: string ): Observable<CountryItems[]>{
     query = query.toLowerCase();
@@ -66,7 +68,6 @@ export class CountryService {
     })
     .pipe(
       map((response: RESTCountry) => {
-        delay(2000)
         // console.log("respuesta completa: ", response);
         if (response && response.data && response.data.objects && response.data.objects.length > 0) {
           // Aplicar el mapper para transformar Country[] a CountryItems[]
@@ -76,6 +77,7 @@ export class CountryService {
           throw new Error('No se pudo obtener la ciudad con dicha información');
         }
       }),
+      delay(2000),
       tap((countries) => this.queryCacheCountry.set(query, countries)),
       catchError(error => {
         console.log("Error fetching: ", error);
@@ -85,8 +87,7 @@ export class CountryService {
   }
 
 
-    searchCountryByAlphaCode( code: string ){
-
+  searchCountryByAlphaCode( code: string ){
     return this.http.get<RESTCountry>(`${ url_api }/code?q=${code}`, {
       headers: {
         Authorization:  `Bearer ${ key_api }`
@@ -103,6 +104,32 @@ export class CountryService {
       }),
       catchError(error => {
         return throwError(() => new Error(`No se pudo obtener países con este código, ${code}`));
+      })
+    );
+  }
+
+
+  searchByRegion( query: string ): Observable<CountryItems[]>{
+    if(this.queryCacheRegion.has(query)){
+      return of(this.queryCacheRegion.get(query)?? []);
+    }
+
+    return this.http.get<RESTCountry>(`${ url_api }?region=${ query }`, {
+      headers:{
+        Authorization:  `Bearer ${ key_api }`
+      }
+    })
+    .pipe(
+      map((response:RESTCountry) => {
+         if (response?.data?.objects?.length > 0) {
+          return countryMapper.mapRestCountryArrayToCountryArray(response.data.objects);
+        } else {
+          throw new Error(`No se pudo obtener países con esta región, ${query}`);
+        }
+      }),
+      catchError( error => {
+        console.error(`No se pudo obtener países con esta región ${ error }`);
+        return throwError(() => new Error(`No se pudo obtener países con esta región, ${error}`));
       })
     );
   }

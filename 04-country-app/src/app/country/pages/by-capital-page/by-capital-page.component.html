@@ -3,8 +3,9 @@
   <country-search-input
     placeholder="Buscar por capital de mi país"
     (value)="query.set($event)"
-    [debounceTime]="300"/>
-
+    [debounceTime]="1000"
+    [intialValue]="query()"
+  />
 
   <country-list
     [countries]= "countryResource.value() ?? []"

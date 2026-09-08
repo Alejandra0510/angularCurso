@@ -1,7 +1,10 @@
 <section>
   <country-search-input
     placeholder="Buscar por ciudad de mi país"
-    (value)="query.set($event)" />
+    (value)="query.set($event)"
+    [debounceTime]="1000"
+    [intialValue]="query()"
+  />
 
 
   <country-list
