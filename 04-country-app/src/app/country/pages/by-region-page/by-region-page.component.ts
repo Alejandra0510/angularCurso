@@ -8,7 +8,7 @@ import { CountryList } from "../../components/country-list/country-list.componen
 import { ActivatedRoute, Router } from '@angular/router';
 
 function validateQueryParam( queryParam: string): Region{
-  queryParam = queryParam.toLocaleLowerCase();
+  queryParam = queryParam.toLowerCase();
 
   const validRegions: Record<string, Region> = {
     africa: 'Africa',
