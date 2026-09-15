@@ -41,4 +41,24 @@ export default class UncommonPageComponent {
     this.client.set(client1);
   }
 
+
+  //i18n Plural
+  clients = signal([
+    'Alejandra',
+    'Alan',
+    'Matias',
+    'Liam',
+    'Jessica',
+    'Oscar',
+    'Carmen',
+    'Andrea',
+    'Alexis',
+    'Rafael'
+  ]);
+
+
+  onDeleteClient(){
+    this.clients.update(prev => prev.slice(1));
+  }
+
 }

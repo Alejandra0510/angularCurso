@@ -11,4 +11,13 @@
             (click)="onChangeClient()">Cambiar cliente</button>
   </card-component>
 
+  <card-component title="i18nPluralPipe">
+    <p>
+      Actualmente hay {{ clients().length }} personas esperando
+    </p>
+
+    <button class="btn btn-primary"
+            (click)="onDeleteClient()"
+            [disabled]="clients().length === 0">Quitar cliente</button>
+  </card-component>
 </section>
