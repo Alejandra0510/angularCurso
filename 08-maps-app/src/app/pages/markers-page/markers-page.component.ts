@@ -1,4 +1,3 @@
-import { filter } from 'rxjs';
 import { JsonPipe } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, signal, viewChild } from '@angular/core';
 import { LngLatLike, Map, MapMouseEvent, Marker, setWorkerUrl } from 'maplibre-gl';

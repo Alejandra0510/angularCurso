@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, input, signal, viewChild, effect } from '@angular/core';
-import { LngLat, Map, Marker, setWorkerUrl } from 'maplibre-gl';
-import { of } from 'rxjs';
+import { Map, Marker, setWorkerUrl } from 'maplibre-gl';
+
 
 /**
  * width 100%
