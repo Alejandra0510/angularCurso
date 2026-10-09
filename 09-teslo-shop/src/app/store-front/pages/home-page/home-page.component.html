@@ -3,11 +3,12 @@
 
 <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-2 gap-3">
   <!-- product-card -->
-   <product-card />
-   <product-card />
-   <product-card />
-   <product-card />
-   <product-card />
-   <product-card />
+   @for (producto of productsResource.value()?.products; track $index) {
+     <product-card [product]="producto" />
+   }
+   <!-- empty -->
+    @empty {
+      <p>No hay productos</p>
+    }
 </div>
 
