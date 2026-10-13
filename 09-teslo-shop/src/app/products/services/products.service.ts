@@ -11,7 +11,6 @@ interface optionsProducts {
   limit?:  number,
   offset?: number,
   gender?: string
-
 }
 
 @Injectable({providedIn: 'root'})
@@ -21,7 +20,7 @@ export class ProductsService {
 
   getProducts(options: optionsProducts): Observable<ProductsReponse>{
 
-    const {limit = 9, offset= 0, gender =''} = options;
+    const {limit = 9, offset= 0, gender = ''} = options;
 
     return this.http.get<ProductsReponse>(`${url_api}/products`, {
       params: {
@@ -38,6 +37,9 @@ export class ProductsService {
 
   getProductByIdOrSlug(idSlug: string): Observable<Product>{
     return this.http.get<Product>(`${url_api}/products/${idSlug}`)
+    // .pipe(
+    //   tap((result) => console.log(result))
+    // )
   }
 
 }

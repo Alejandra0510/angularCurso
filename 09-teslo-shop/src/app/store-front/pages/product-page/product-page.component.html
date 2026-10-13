@@ -1,2 +1,21 @@
-<h1>{{ productInfo().title }}</h1>
-<p>Descripción</p>
+@if(productInfo.isLoading()){
+  <div class="flex justify-center items-center h-screen">
+    <span class="loading loading-spinner loading-lg"></span>
+  </div>
+}
+
+<!-- producto -->
+ @if (productInfo.hasValue()) {
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+    <!-- imágenes -->
+    <product-carousel [images]="productInfo.value()?.images ?? []" />
+    <!--  -->
+    <div>
+      <h2 class="text-2xl font-bold font-montserrat">
+        {{ productInfo.value()?.title }}
+      </h2>
+      <div class="divider"></div>
+      <p class="text-justify">{{ productInfo.value()?.description}}</p>
+    </div>
+  </div>
+ }
