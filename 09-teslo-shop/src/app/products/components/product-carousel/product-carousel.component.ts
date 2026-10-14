@@ -26,7 +26,6 @@ export class ProductCarouselComponent implements AfterViewInit {
   swiper: Swiper | undefined = undefined;
 
   ngAfterViewInit(): void {
-    console.log(this.images());
     const element = this.swiperDiv().nativeElement;
     if(!element) return;
 
