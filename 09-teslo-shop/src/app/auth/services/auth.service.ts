@@ -15,7 +15,7 @@ export class AuthService {
 
   private _authSatus = signal<AuthStatus>('checking');
   private _user      = signal<User | null>(null);
-  private _token     = signal<string | null>(null);
+  private _token     = signal<string | null>(localStorage.getItem('token'));
 
   private http = inject(HttpClient);
 
@@ -32,6 +32,7 @@ export class AuthService {
 
   user = computed(() => this._user());
   token = computed(() => this._token());
+  isAdmin = computed(() => this._user()?.roles.includes('admin') ?? false);
 
   login(email: string, pass: string): Observable<boolean>{
     return this.http.post<AuthResponse>(`${ url_api }/auth/login`,{
@@ -53,9 +54,9 @@ export class AuthService {
     }
 
     return this.http.get<AuthResponse>(`${url_api}/auth/check-status`, {
-      headers:{
-        Authorization: `Bearer ${token}`,
-      }
+      // headers:{
+      //   Authorization: `Bearer ${token}`,
+      // }
     })
     .pipe(
       map((resp) => this.handleOutSuccess(resp)),
@@ -68,8 +69,23 @@ export class AuthService {
     this._user.set(null);
     this._token.set(null);
     this._authSatus.set('not-authenticated');
+
     // localStorage.clear();
     localStorage.removeItem('token');
+  }
+
+
+
+  register(email: string, password: string, fullname: string):Observable<boolean>{
+    return this.http.post<AuthResponse>(`${url_api}/auth/register`,{
+      email: email,
+      password: password,
+      fullName: fullname
+    })
+    .pipe(
+      map((resp) => this.handleOutSuccess(resp)),
+      catchError((error:any) => this.handleAuthError(error))
+    )
   }
 
 

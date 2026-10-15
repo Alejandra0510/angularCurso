@@ -1,0 +1,25 @@
+<h1 class="text-2xl font-bold">Listado de Productos</h1>
+<h3 class="text-lg">
+  Total de productos
+  <span class="text-accent">{{ productsResource.value()?.count }}</span>
+</h3>
+<div class="divider"></div>
+<!-- Paginado -->
+<div class="flex gap-2 items-center h-20">
+  <app-pagination [pages]="productsResource.value()?.pages ?? 0"
+                 [count]="productsResource.value()?.count"
+                 [currentPage]="paginationService.currentPage()"/>
+
+  <select class="select select-bordered w-32"
+    (change)="changeRowsPage($event)">
+    <option value="10">10</option>
+    <option value="20">20</option>
+    <option value="50">50</option>
+    <option value="100">100</option>
+  </select>
+
+</div>
+
+
+<!-- listado -->
+<product-table [products]="productsResource.value()?.products ?? []" />
