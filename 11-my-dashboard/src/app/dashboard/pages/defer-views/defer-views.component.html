@@ -1,1 +1,19 @@
-<p>defes-views works!</p>,
+<section class="grid grid-cols-1">
+  @defer () {
+    <heavy-loaders-slow cssClass="bg-blue-500" />
+  }@placeholder {
+    <p class="h-150 w-full bg-linear-to-r from-gray-200 to-gray-400 animate-pulse">Cargando.....</p>
+  }
+
+  @defer () {
+    <heavy-loaders-slow cssClass="bg-pink-500" />
+  }@placeholder {
+    <p class="h-150 w-full bg-linear-to-r from-gray-200 to-gray-400 animate-pulse">Cargando.....</p>
+  }
+
+  @defer () {
+    <heavy-loaders-slow cssClass="bg-purple-500" />
+  }@placeholder {
+    <p class="h-150 w-full bg-linear-to-r from-gray-200 to-gray-400 animate-pulse">Cargando.....</p>
+  }
+</section>
