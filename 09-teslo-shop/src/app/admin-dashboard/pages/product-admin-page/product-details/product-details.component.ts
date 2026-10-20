@@ -1,10 +1,13 @@
-import { Component, inject, input, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
+import { FormUtils } from '@utils/form-utils';
 import { Product } from '@products/interfaces/product.interface';
 import { ProductCarouselComponent } from '@products/components/product-carousel/product-carousel.component';
-import { FormUtils } from '@utils/form-utils';
+import { ProductsService } from '@products/services/products.service';
 import { FormErrorLabelComponent } from '@shared/components/form-error-label/form-error-label.component';
+import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 
 
 @Component({
@@ -13,7 +16,20 @@ import { FormErrorLabelComponent } from '@shared/components/form-error-label/for
   templateUrl: './product-details.component.html',
 })
 export class ProductDetailsComponent implements OnInit {
+  product = input.required<Product>();
+
   fb = inject(FormBuilder);
+  router = inject(Router);
+  productService = inject(ProductsService);
+
+  wasSave = signal(false);
+  imagesTemp = signal<string[]>([]);
+  imageFilesList: FileList|undefined = undefined;
+
+  updateFilesTemp = computed(() => {
+    const currenImages = [...this.product().images, ...this.imagesTemp()];
+    return currenImages;
+  });
 
   formProduct = this.fb.group({
     title: ['', Validators.required],
@@ -27,7 +43,6 @@ export class ProductDetailsComponent implements OnInit {
     gender: ['men', [Validators.required, Validators.pattern(/men|wommen|kid|unixes/)]], //indica los valores nadamas a escoger
   });
 
-  product = input.required<Product>();
   sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
   ngOnInit(): void {
@@ -52,12 +67,9 @@ export class ProductDetailsComponent implements OnInit {
     this.formProduct.patchValue({ sizes: currentSizes });
   }
 
-  onSubmit() {
-    debugger;
+  async onSubmit() {
     const isValid = this.formProduct.valid;
     this.formProduct.markAsTouched();
-
-    console.log({isValid});
 
     if(!isValid)return;
 
@@ -71,8 +83,48 @@ export class ProductDetailsComponent implements OnInit {
         .map(tag=> tag.trim() ?? []),
     };
 
-    console.log({productLike});
+    if(this.product().id === 'new'){
+      //crea producto
+      const product = await firstValueFrom(
+        this.productService.createProduct(
+          productLike,
+          this.imageFilesList
+        )
+      );
+      this.router.navigate(['/admin/products', product.id]);
 
+    } else {
+      await firstValueFrom(
+        this.productService.updateProduct(
+          this.product().id,
+          productLike,
+          this.imageFilesList
+        )
+      );
+    }
+
+    this.wasSave.set(true);
+    setTimeout(() => {
+      this.wasSave.set(false);
+    }, 3000);
+
+  }
+
+
+  // imagenes
+  onFilesChanged( event:Event ){
+    const filesList = (event.target as HTMLInputElement).files;
+    // información completa de la imagen, para guardarla en la bd
+    this.imageFilesList = filesList ?? undefined;
+
+    // crea url de la imagen para mostrar
+    const urlImages = Array.from(filesList ?? [])
+    .map(
+      file => URL.createObjectURL(file)
+    )
+    this.imagesTemp.set(urlImages);
+
+    // console.log(this.updateFilesTemp());
   }
 
 }
